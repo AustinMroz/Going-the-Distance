@@ -1,0 +1,32 @@
+apply plugin: 'com.android.application'
+
+android {
+	compileSdkVersion = 22
+	buildToolsVersion '27.0.3'
+	defaultConfig {
+		applicationId 'Austin.Mroz.AndroidMaps'
+			// Defines the minimum API level required to run the app.
+			minSdkVersion 15
+			// Specifies the API level used to test the app.
+			targetSdkVersion 22
+			// Defines the version number of your app.
+			versionCode 1
+			// Defines a user-friendly version name for your app.
+			versionName "1.0"
+	}
+	compileOptions {
+		sourceCompatibility JavaVersion.VERSION_1_8
+		targetCompatibility JavaVersion.VERSION_1_8
+	}
+	buildTypes {
+		release {
+			minifyEnabled true // Enables code shrinking for the release build type.
+				proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+		}
+	}
+}
+
+dependencies {
+	implementation 'com.google.android.gms:play-services-maps:12.0.0'
+}
+//apply plugin: 'com.google.gms.google-services'
