@@ -2,10 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	  package="Austin.Mroz">
 
-		<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCem8ElF-SWCMUBW-j4z2NIGnz4-KyUASk"/>
+	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 
   <application android:label="Android-Map">
+		<meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCem8ElF-SWCMUBW-j4z2NIGnz4-KyUASk"/>
+
 	<uses-library android:name="com.google.android.maps" />
     <activity android:name="MainActivity">
       <intent-filter>

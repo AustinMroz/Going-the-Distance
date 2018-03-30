@@ -16,7 +16,6 @@ import android.location.Address;
 import android.location.Location;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.task.OnSuccessListener;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -26,7 +25,7 @@ import java.util.logging.Logger;
 public class DisplayMessageActivity extends Activity implements OnMapReadyCallback {
 	private Address adr;
 	private FusedLocationProviderClient fusedLocationClient;
-	private Location loc;
+	private static Location loc;
 
 	@Override
 		public void onCreate(Bundle sis) {
@@ -37,14 +36,7 @@ public class DisplayMessageActivity extends Activity implements OnMapReadyCallba
 			MapFragment mf = (MapFragment)getFragmentManager().findFragmentById(R.id.map);
 
 			fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-			fusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
-					@Override
-					public void OnSuccess(Location l) {
-					if(l==null)
-					  Logger.getLogger("").warning("Returned location was null");
-					loc = l;
-					}
-					});
+			fusedLocationClient.getLastLocation().addOnSuccessListener(this, (l) -> loc = l);
 			try {
 				adr = new Geocoder(this).getFromLocationName(m,1).get(0);
 				mf.getMapAsync(this);
@@ -59,12 +51,15 @@ public class DisplayMessageActivity extends Activity implements OnMapReadyCallba
 	public void onMapReady(GoogleMap gm) {
 		LatLng targ = new LatLng(adr.getLatitude(),adr.getLongitude());
 		String label = adr.getPostalCode();
+		gm.setMyLocationEnabled(true);
 		if(loc!=null) {
 			float[] f = new float[1];
 			Location.distanceBetween(loc.getLatitude(),loc.getLongitude(),
 					adr.getLatitude(), adr.getLongitude(), f);
 			label = f[0] +" meters";
 		}
+		if (label == null)
+			label = "Nothing to show";
 		gm.addMarker(new MarkerOptions().position(targ).title(label));
 		Logger.getLogger("").info(""+adr.getExtras());
 		gm.animateCamera(CameraUpdateFactory.newLatLngZoom(targ,14));
