@@ -1,6 +1,7 @@
 <resources>
-  <string name="app_name">My Second App</string>
+  <string name="app_name">Android Map</string>
   <string name="edit_message">Enter a location</string>
   <string name="button_send">Send</string>
   <string name="title_activity_display_message">Map!</string>
+  <string name="distance">Generating Distance</string>
 </resources>
