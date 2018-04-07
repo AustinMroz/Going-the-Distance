@@ -18,11 +18,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
 	double gen = Math.random();
-	if(gen<.25)
-	    gen = -8*(gen-.25)*(gen-.25)+.5;
-	else
-	    gen = 7.0/9*(gen-.25)*(gen-.25)+.5;
-	dist = (1-gen)*12450;
+	dist = 16000*gen*gen*gen;
 
 	setContentView(R.layout.activity_main);
 	EditText e = (EditText)findViewById(R.id.edit_message);
@@ -54,4 +50,21 @@ public class MainActivity extends Activity {
     //consider piecewise?
     //-8(x-.25)^2+.5 for x<.5
     //8/9(x-.25)^2+.5
+
+    //furthest distance I can get with gm is 20,000.
+    //This is in the middle of the indian ocean.
+    //furthest landmass is ~16.5 in 'straya
+    //~8-14 is most of eurasia
+    //250 for nearby stuff.
+    //<2k for US
+    //aim for 25% 0-250,
+    //25% 250-2k
+    //25% 2k-8k
+    //25% 8-16k
+
+    //With a 16000 multiplier, cutoffs are
+    //1/64
+    //1/8
+    //1/2
+    //this is almost exactly x^3...
 }

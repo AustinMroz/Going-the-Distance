@@ -6,12 +6,14 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.CameraUpdate;
 import android.location.Geocoder;
 import android.location.Address;
 import android.location.Location;
@@ -76,21 +78,28 @@ public class DisplayMessageActivity extends Activity implements OnMapReadyCallba
 		LatLng targ = new LatLng(adr.getLatitude(),adr.getLongitude());
 		String label = null;
 		gm.setMyLocationEnabled(true);
+
+		CameraUpdate cu = CameraUpdateFactory.newLatLngZoom(targ,14f);
+
 		if(loc!=null) {
 			float[] f = new float[1];
 			Location.distanceBetween(loc.getLatitude(),loc.getLongitude(),
 					adr.getLatitude(), adr.getLongitude(), f);
-			Logger.getLogger("").info(String.format("%.2f target, %.2f guessed",f[0],dist));
-			label = Math.abs(dist-f[0]/1000) +" kilometers off\n";
+			label = String.format("%.3f mk off",Math.abs(dist-f[0]/1000));
 		  setTitle(String.format("%.2f%% error",Math.abs(dist-f[0]/1000.0)/dist*100));
 
 			gm.addCircle(new CircleOptions().center(new LatLng(loc.getLatitude(),loc.getLongitude()))
 						.radius(dist*1000));
+
+			//latlng bounds code. There's a correct way of doing it, but the logic is ugly and error prone.
+			LatLngBounds llb = new LatLngBounds(targ,targ);
+			LatLng other = new LatLng(loc.getLatitude(), loc.getLongitude());
+			cu = CameraUpdateFactory.newLatLngBounds(llb.including(other),50);
 		}
 		if (label == null)
 			label = "Nothing to show";
 		gm.addMarker(new MarkerOptions().position(targ).title(label));
 		Logger.getLogger("").info(""+adr.getExtras());
-		gm.animateCamera(CameraUpdateFactory.newLatLngZoom(targ,14));
+		gm.animateCamera(cu);
 	}
 }
