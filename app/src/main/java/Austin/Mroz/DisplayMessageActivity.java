@@ -85,7 +85,7 @@ public class DisplayMessageActivity extends Activity implements OnMapReadyCallba
 			float[] f = new float[1];
 			Location.distanceBetween(loc.getLatitude(),loc.getLongitude(),
 					adr.getLatitude(), adr.getLongitude(), f);
-			label = String.format("%.3f mk off",Math.abs(dist-f[0]/1000));
+			label = String.format("%.3f km off",Math.abs(dist-f[0]/1000));
 		  setTitle(String.format("%.2f%% error",Math.abs(dist-f[0]/1000.0)/dist*100));
 
 			gm.addCircle(new CircleOptions().center(new LatLng(loc.getLatitude(),loc.getLongitude()))
